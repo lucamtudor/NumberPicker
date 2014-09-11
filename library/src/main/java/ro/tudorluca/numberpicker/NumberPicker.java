@@ -196,9 +196,6 @@ public class NumberPicker extends LinearLayout {
 
     private static final TwoDigitFormatter sTwoDigitFormatter = new TwoDigitFormatter();
 
-    /**
-     * @hide
-     */
     public static final Formatter getTwoDigitFormatter() {
         return sTwoDigitFormatter;
     }
@@ -1329,7 +1326,6 @@ public class NumberPicker extends LinearLayout {
      * Sets the min value of the picker.
      *
      * @param minValue The min value inclusive.
-     *                 <p/>
      *                 <strong>Note:</strong> The length of the displayed values array
      *                 set via {@link #setDisplayedValues(String[])} must be equal to the
      *                 range of selectable numbers which is equal to
@@ -1367,7 +1363,6 @@ public class NumberPicker extends LinearLayout {
      * Sets the max value of the picker.
      *
      * @param maxValue The max value inclusive.
-     *                 <p/>
      *                 <strong>Note:</strong> The length of the displayed values array
      *                 set via {@link #setDisplayedValues(String[])} must be equal to the
      *                 range of selectable numbers which is equal to
@@ -1405,7 +1400,6 @@ public class NumberPicker extends LinearLayout {
      * Sets the values to be displayed.
      *
      * @param displayedValues The displayed values.
-     *                        <p/>
      *                        <strong>Note:</strong> The length of the displayed values array
      *                        must be equal to the range of selectable numbers which is equal to
      *                        {@link #getMaxValue()} - {@link #getMinValue()} + 1.
@@ -2175,24 +2169,6 @@ public class NumberPicker extends LinearLayout {
         public void run() {
             changeValueByOne(mIncrement);
             postDelayed(this, mLongPressUpdateInterval);
-        }
-    }
-
-    /**
-     * @hide
-     */
-    public static class CustomEditText extends EditText {
-
-        public CustomEditText(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        @Override
-        public void onEditorAction(int actionCode) {
-            super.onEditorAction(actionCode);
-            if (actionCode == EditorInfo.IME_ACTION_DONE) {
-                clearFocus();
-            }
         }
     }
 
