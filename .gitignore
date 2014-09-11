@@ -1,0 +1,41 @@
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea/*
+.idea/tasks.xml
+.idea/workspace.xml
+.gradle
+local.properties
+out/
+build/
+production/
+*~
+*.swp
+*.iml
+app/build/
+
+# Jimu Mirror
+app/mirror
+
