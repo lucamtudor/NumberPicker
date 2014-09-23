@@ -14,4 +14,13 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <ro.tudorluca.numberpicker.NumberPicker
+        style="@style/NPWidget.Holo.NumberPicker"
+        android:id="@+id/picker2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/picker"
+        android:layout_alignTop="@id/picker" />
+
 </RelativeLayout>

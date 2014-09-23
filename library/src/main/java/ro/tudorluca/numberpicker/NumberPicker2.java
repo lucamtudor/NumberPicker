@@ -29,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.Spanned;
+import android.text.StaticLayout;
 import android.text.TextUtils;
 import android.text.method.NumberKeyListener;
 import android.util.AttributeSet;
@@ -1477,9 +1478,13 @@ public class NumberPicker2 extends LinearLayout {
             // item. Otherwise, if the user starts editing the text via the
             // IME he may see a dimmed version of the old value intermixed
             // with the new one.
-//            if (i != SELECTOR_MIDDLE_ITEM_INDEX || mInputText.getVisibility() != VISIBLE) {
             if (i != SELECTOR_MIDDLE_ITEM_INDEX || mTextT.getVisibility() != VISIBLE) {
-                canvas.drawText(scrollSelectorValue, 0, scrollSelectorValue.length(), x, y, mSelectorWheelPaint);
+                StaticLayout staticLayout = new StaticLayout(scrollSelectorValue, mTextT.getPaint(), mTextT.getLayout().getWidth(), mTextT.getLayout().getAlignment(), 1, 0, false);
+                float tx = x - mTextT.getLayout().getWidth() / 2;
+                float ty = y - mSelectionDividersDistance / 2 - mSelectionDividerHeight / 2;
+                canvas.translate(tx, ty);
+                staticLayout.draw(canvas);
+                canvas.translate(-tx, -ty);
             }
             y += mSelectorElementHeight;
         }

@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ro.tudorluca.numberpicker.NumberPicker;
 import ro.tudorluca.numberpicker.NumberPicker2;
 
 
@@ -20,6 +21,21 @@ public class MainActivity extends ActionBarActivity {
         picker.setMinValue(0);
         picker.setMaxValue(10);
         picker.setDisplayedValues(getValues(11));
+
+        NumberPicker picker1 = (NumberPicker) findViewById(R.id.picker2);
+        picker1.setMinValue(0);
+        picker1.setMaxValue(10);
+        picker1.setDisplayedValues(getValues1(11));
+
+    }
+
+    private String[] getValues1(int count) {
+        String[] values = new String[count];
+        for (int i = 0; i < count; i++) {
+            values[i] = String.valueOf(Html.fromHtml("<sup>1</sup>/<sub>" + i + "</sub>"));
+        }
+
+        return values;
     }
 
     private CharSequence[] getValues(int count) {

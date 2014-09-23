@@ -22,6 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/np__numberpicker_text"
+        android:padding="5dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
