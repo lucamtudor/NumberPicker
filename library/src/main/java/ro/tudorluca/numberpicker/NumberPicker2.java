@@ -255,7 +255,7 @@ public class NumberPicker2 extends LinearLayout {
      * The values to be displayed instead the indices.
      */
 //    private String[] mDisplayedValues;
-    private String[] mDisplayedValues;
+    private CharSequence[] mDisplayedValues;
 
     /**
      * Lower value of the range of numbers allowed for the NumberPicker
@@ -295,7 +295,7 @@ public class NumberPicker2 extends LinearLayout {
     /**
      * Cache for the string representation of selector indices.
      */
-    private final SparseArray<String> mSelectorIndexToStringCache = new SparseArray<String>();
+    private final SparseArray<CharSequence> mSelectorIndexToStringCache = new SparseArray<CharSequence>();
 
     /**
      * The selector indices whose value are show by the selector.
@@ -738,25 +738,20 @@ public class NumberPicker2 extends LinearLayout {
         final int msrdHght = getMeasuredHeight();
 
         // Input text centered horizontally.
-//        final int inptTxtMsrdWdth = mInputText.getMeasuredWidth();
-//        final int inptTxtMsrdHght = mInputText.getMeasuredHeight();
         final int inptTxtMsrdWdth = mTextT.getMeasuredWidth();
         final int inptTxtMsrdHght = mTextT.getMeasuredHeight();
         final int inptTxtLeft = (msrdWdth - inptTxtMsrdWdth) / 2;
         final int inptTxtTop = (msrdHght - inptTxtMsrdHght) / 2;
         final int inptTxtRight = inptTxtLeft + inptTxtMsrdWdth;
         final int inptTxtBottom = inptTxtTop + inptTxtMsrdHght;
-//        mInputText.layout(inptTxtLeft, inptTxtTop, inptTxtRight, inptTxtBottom);
         mTextT.layout(inptTxtLeft, inptTxtTop, inptTxtRight, inptTxtBottom);
 
         if (changed) {
             // need to do all this when we know our size
             initializeSelectorWheel();
             initializeFadingEdges();
-            mTopSelectionDividerTop = (getHeight() - mSelectionDividersDistance) / 2
-                    - mSelectionDividerHeight;
-            mBottomSelectionDividerBottom = mTopSelectionDividerTop + 2 * mSelectionDividerHeight
-                    + mSelectionDividersDistance;
+            mTopSelectionDividerTop = (getHeight() - mSelectionDividersDistance) / 2 - mSelectionDividerHeight;
+            mBottomSelectionDividerBottom = mTopSelectionDividerTop + 2 * mSelectionDividerHeight + mSelectionDividersDistance;
         }
     }
 
@@ -1245,7 +1240,7 @@ public class NumberPicker2 extends LinearLayout {
         } else {
             final int valueCount = mDisplayedValues.length;
             for (int i = 0; i < valueCount; i++) {
-                final float textWidth = mSelectorWheelPaint.measureText(mDisplayedValues[i]);
+                final float textWidth = mSelectorWheelPaint.measureText(mDisplayedValues[i], 0, mDisplayedValues[i].length());
                 if (textWidth > maxTextWidth) {
                     maxTextWidth = (int) textWidth;
                 }
@@ -1400,7 +1395,7 @@ public class NumberPicker2 extends LinearLayout {
      *
      * @return The displayed values.
      */
-    public String[] getDisplayedValues() {
+    public CharSequence[] getDisplayedValues() {
         return mDisplayedValues;
     }
 
@@ -1412,7 +1407,7 @@ public class NumberPicker2 extends LinearLayout {
      *                        must be equal to the range of selectable numbers which is equal to
      *                        {@link #getMaxValue()} - {@link #getMinValue()} + 1.
      */
-    public void setDisplayedValues(String[] displayedValues) {
+    public void setDisplayedValues(CharSequence[] displayedValues) {
         if (mDisplayedValues == displayedValues) {
             return;
         }
@@ -1476,7 +1471,7 @@ public class NumberPicker2 extends LinearLayout {
         int[] selectorIndices = mSelectorIndices;
         for (int i = 0; i < selectorIndices.length; i++) {
             int selectorIndex = selectorIndices[i];
-            String scrollSelectorValue = mSelectorIndexToStringCache.get(selectorIndex);
+            CharSequence scrollSelectorValue = mSelectorIndexToStringCache.get(selectorIndex);
             // Do not draw the middle item if input is visible since the input
             // is shown only if the wheel is static and it covers the middle
             // item. Otherwise, if the user starts editing the text via the
@@ -1484,7 +1479,7 @@ public class NumberPicker2 extends LinearLayout {
             // with the new one.
 //            if (i != SELECTOR_MIDDLE_ITEM_INDEX || mInputText.getVisibility() != VISIBLE) {
             if (i != SELECTOR_MIDDLE_ITEM_INDEX || mTextT.getVisibility() != VISIBLE) {
-                canvas.drawText(scrollSelectorValue, x, y, mSelectorWheelPaint);
+                canvas.drawText(scrollSelectorValue, 0, scrollSelectorValue.length(), x, y, mSelectorWheelPaint);
             }
             y += mSelectorElementHeight;
         }
@@ -1690,10 +1685,8 @@ public class NumberPicker2 extends LinearLayout {
         mSelectorElementHeight = mTextSize + mSelectorTextGapHeight;
         // Ensure that the middle item is positioned the same as the text in
         // mInputText
-//        int editTextTextPosition = mInputText.getBaseline() + mInputText.getTop();
         int editTextTextPosition = mTextT.getBaseline() + mTextT.getTop();
-        mInitialScrollOffset = editTextTextPosition
-                - (mSelectorElementHeight * SELECTOR_MIDDLE_ITEM_INDEX);
+        mInitialScrollOffset = editTextTextPosition - (mSelectorElementHeight * SELECTOR_MIDDLE_ITEM_INDEX);
         mCurrentScrollOffset = mInitialScrollOffset;
         updateInputTextView();
     }
@@ -1796,8 +1789,8 @@ public class NumberPicker2 extends LinearLayout {
      * selectorIndex</code> to avoid multiple instantiations of the same string.
      */
     private void ensureCachedScrollSelectorValue(int selectorIndex) {
-        SparseArray<String> cache = mSelectorIndexToStringCache;
-        String scrollSelectorValue = cache.get(selectorIndex);
+        SparseArray<CharSequence> cache = mSelectorIndexToStringCache;
+        CharSequence scrollSelectorValue = cache.get(selectorIndex);
         if (scrollSelectorValue != null) {
             return;
         }
@@ -1844,8 +1837,7 @@ public class NumberPicker2 extends LinearLayout {
          * find the correct value in the displayed values for the current
          * number.
          */
-        String text = (mDisplayedValues == null) ? formatNumber(mValue)
-                : mDisplayedValues[mValue - mMinValue];
+        CharSequence text = (mDisplayedValues == null) ? formatNumber(mValue) : mDisplayedValues[mValue - mMinValue];
 //        if (!TextUtils.isEmpty(text) && !text.equals(mInputText.getText().toString())) {
 //            mInputText.setText(text);
 //            return true;
@@ -1944,7 +1936,7 @@ public class NumberPicker2 extends LinearLayout {
             for (int i = 0; i < mDisplayedValues.length; i++) {
                 // Don't force the user to type in jan when ja will do
                 value = value.toLowerCase();
-                if (mDisplayedValues[i].toLowerCase().startsWith(value)) {
+                if (mDisplayedValues[i].toString().toLowerCase().startsWith(value)) {
                     return mMinValue + i;
                 }
             }
@@ -2044,8 +2036,8 @@ public class NumberPicker2 extends LinearLayout {
                 String result = String.valueOf(dest.subSequence(0, dstart)) + filtered
                         + dest.subSequence(dend, dest.length());
                 String str = String.valueOf(result).toLowerCase();
-                for (String val : mDisplayedValues) {
-                    String valLowerCase = val.toLowerCase();
+                for (CharSequence val : mDisplayedValues) {
+                    String valLowerCase = val.toString().toLowerCase();
                     if (valLowerCase.startsWith(str)) {
 //                        postSetSelectionCommand(result.length(), val.length());
                         return val.subSequence(dstart, val.length());
@@ -2504,7 +2496,7 @@ public class NumberPicker2 extends LinearLayout {
         }
 
         private void sendAccessibilityEventForVirtualButton(int virtualViewId, int eventType,
-                                                            String text) {
+                                                            CharSequence text) {
             if (((AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE)).isEnabled()) {
                 AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
                 event.setClassName(Button.class.getName());
@@ -2520,9 +2512,8 @@ public class NumberPicker2 extends LinearLayout {
                                                              int virtualViewId, List<AccessibilityNodeInfo> outResult) {
             switch (virtualViewId) {
                 case VIRTUAL_VIEW_ID_DECREMENT: {
-                    String text = getVirtualDecrementButtonText();
-                    if (!TextUtils.isEmpty(text)
-                            && text.toString().toLowerCase().contains(searchedLowerCase)) {
+                    CharSequence text = getVirtualDecrementButtonText();
+                    if (!TextUtils.isEmpty(text) && text.toString().toLowerCase().contains(searchedLowerCase)) {
                         outResult.add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_DECREMENT));
                     }
                 }
@@ -2545,7 +2536,7 @@ public class NumberPicker2 extends LinearLayout {
                 }
                 break;
                 case VIRTUAL_VIEW_ID_INCREMENT: {
-                    String text = getVirtualIncrementButtonText();
+                    CharSequence text = getVirtualIncrementButtonText();
                     if (!TextUtils.isEmpty(text)
                             && text.toString().toLowerCase().contains(searchedLowerCase)) {
                         outResult.add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_INCREMENT));
@@ -2569,7 +2560,7 @@ public class NumberPicker2 extends LinearLayout {
         }
 
         private AccessibilityNodeInfo createAccessibilityNodeInfoForVirtualButton(int virtualViewId,
-                                                                                  String text, int left, int top, int right, int bottom) {
+                                                                                  CharSequence text, int left, int top, int right, int bottom) {
             AccessibilityNodeInfo info = AccessibilityNodeInfo.obtain();
             info.setClassName(Button.class.getName());
             info.setPackageName(getContext().getPackageName());
@@ -2666,26 +2657,24 @@ public class NumberPicker2 extends LinearLayout {
             return getWrapSelectorWheel() || getValue() < getMaxValue();
         }
 
-        private String getVirtualDecrementButtonText() {
+        private CharSequence getVirtualDecrementButtonText() {
             int value = mValue - 1;
             if (mWrapSelectorWheel) {
                 value = getWrappedSelectorIndex(value);
             }
             if (value >= mMinValue) {
-                return (mDisplayedValues == null) ? formatNumber(value)
-                        : mDisplayedValues[value - mMinValue];
+                return (mDisplayedValues == null) ? formatNumber(value) : mDisplayedValues[value - mMinValue];
             }
             return null;
         }
 
-        private String getVirtualIncrementButtonText() {
+        private CharSequence getVirtualIncrementButtonText() {
             int value = mValue + 1;
             if (mWrapSelectorWheel) {
                 value = getWrappedSelectorIndex(value);
             }
             if (value <= mMaxValue) {
-                return (mDisplayedValues == null) ? formatNumber(value)
-                        : mDisplayedValues[value - mMinValue];
+                return (mDisplayedValues == null) ? formatNumber(value) : mDisplayedValues[value - mMinValue];
             }
             return null;
         }

@@ -28,7 +28,7 @@
         <!-- @hide The layout of the number picker. -->
         <attr name="internalLayout" format="reference" />
         <!-- @hide The drawable for pressed virtual (increment/decrement) buttons. -->
-        <attr name="virtualButtonPressedDrawable" format="reference"/>
+        <attr name="virtualButtonPressedDrawable" format="reference" />
     </declare-styleable>
 
     <style name="NPWidget">
@@ -49,6 +49,10 @@
         <item name="internalMinWidth">64dip</item>
         <item name="internalMaxHeight">180dip</item>
         <item name="virtualButtonPressedDrawable">@drawable/item_background_holo_dark</item>
+    </style>
+
+    <style name="NPWidget.Holo.NumberPicker2" parent="NPWidget.Holo.NumberPicker">
+        <item name="internalLayout">@layout/number_picker_with_selector_wheel_no_input</item>
     </style>
 
     <style name="NPWidget.Holo.Light.NumberPicker" parent="NPWidget.Holo.NumberPicker">

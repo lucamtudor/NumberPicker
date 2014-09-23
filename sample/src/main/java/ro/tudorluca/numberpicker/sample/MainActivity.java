@@ -2,11 +2,11 @@ package ro.tudorluca.numberpicker.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import ro.tudorluca.numberpicker.NumberPicker;
+import ro.tudorluca.numberpicker.NumberPicker2;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -16,15 +16,19 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NumberPicker picker = (NumberPicker) findViewById(R.id.picker);
+        NumberPicker2 picker = (NumberPicker2) findViewById(R.id.picker);
         picker.setMinValue(0);
         picker.setMaxValue(10);
-        picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Toast.makeText(MainActivity.this, "Value: " + newVal, Toast.LENGTH_SHORT).show();
-            }
-        });
+        picker.setDisplayedValues(getValues(11));
+    }
+
+    private CharSequence[] getValues(int count) {
+        CharSequence[] values = new CharSequence[count];
+        for (int i = 0; i < count; i++) {
+            values[i] = Html.fromHtml("<sup>1</sup>/<sub>" + i + "</sub>");
+        }
+
+        return values;
     }
 
 
